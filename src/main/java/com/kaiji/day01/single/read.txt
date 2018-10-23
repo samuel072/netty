@@ -1,0 +1,8 @@
+1. 单线进程的IO例子.
+注意点:
+阻塞点有两个:
+    1. serverSocket.accept(); // 创建服务的时候, 等待客户端连接
+    2. InputStream is = socket.getInputStream();
+       is.read(); // 读取从客户端发送来的消息的时候.
+
+同一个端口, 在同一时间内, 只能由一个客户端连接. 其他的都要等这个客户端断开才能连接
