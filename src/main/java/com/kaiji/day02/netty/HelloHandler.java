@@ -1,6 +1,5 @@
 package com.kaiji.day02.netty;
 
-import org.jboss.netty.buffer.ChannelBuffer;
 import org.jboss.netty.channel.ChannelHandlerContext;
 import org.jboss.netty.channel.ChannelStateEvent;
 import org.jboss.netty.channel.ExceptionEvent;
@@ -12,13 +11,32 @@ public class HelloHandler extends SimpleChannelHandler {
 
 	/**
 	 * 获取从客户端发送来的消息
+	 * 
+	 * 
+	 * 为什么要将字符串转换?
+	 * 	if (message instanceof ChannelBuffer) {
+            return acquire((ChannelBuffer) message);
+        } else if (message instanceof FileRegion) {
+            return acquire((FileRegion) message);
+        }
+        
+        它只支持 ChannelBuffer 或者 FileRegion 这两种类型的数据
+	 * 
+	 * 
 	 */
 	@Override
 	public void messageReceived(ChannelHandlerContext ctx, MessageEvent e) throws Exception {
+		// 读数据: 第一种方式
 //		ChannelBuffer buffer = (ChannelBuffer)e.getMessage();
 //		String msg = new String(buffer.array());
 //		System.out.println("获取的消息是: " + msg);
 		System.out.println("获取的消息是: " + e.getMessage());
+		
+		// 写入的第一种方式:
+//		ChannelBuffer copiedBuffer = ChannelBuffers.copiedBuffer("hello 客户端第一种方式".getBytes());
+//		ctx.getChannel().write(copiedBuffer);
+		// 开始向客户端发送消息
+		ctx.getChannel().write("hello 客户端!");
 		super.messageReceived(ctx, e);
 	}
 

@@ -10,6 +10,7 @@ import org.jboss.netty.channel.ChannelPipelineFactory;
 import org.jboss.netty.channel.Channels;
 import org.jboss.netty.channel.socket.nio.NioServerSocketChannelFactory;
 import org.jboss.netty.handler.codec.string.StringDecoder;
+import org.jboss.netty.handler.codec.string.StringEncoder;
 
 public class NettyServer {
 
@@ -32,7 +33,11 @@ public class NettyServer {
 				ChannelPipeline channelPipeline = Channels.pipeline();
 				// 将管道接收到的流转换成 String, 这样就不需要在messageReceived方法中
 				// ChannelBuffer字节转成String字符串
+				// 读数据的第二种方式
 				channelPipeline.addLast("strDecoder", new StringDecoder());
+				
+				// 写数据的第二种方式
+				channelPipeline.addLast("strEncoder", new StringEncoder());
 				channelPipeline.addLast("handler", new HelloHandler());
 				return channelPipeline;
 			}
